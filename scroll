@@ -1,0 +1,32 @@
+(() => {
+  let count = 0;
+
+  function getAllButtons() {
+    return document.getElementsByClassName('artdeco-button artdeco-button--muted artdeco-button--2 artdeco-button--secondary ember-view') || [];
+  }
+
+  async function unfollowAll() {
+    const buttons = getAllButtons();
+    for (let button of buttons) {
+      if (parseInt(button.id.replace("ember", "")) > 25 && button.innerText == "Following") {
+          button.click();
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          let modal_b = document.getElementsByClassName("artdeco-modal__confirm-dialog-btn artdeco-button artdeco-button--2 artdeco-button--primary ember-view")[0]
+          modal_b.click();
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          window.scrollTo(0, button.offsetTop - 260);
+      }
+    }
+  }
+
+  async function run() {
+    await unfollowAll();
+    window.scrollTo(0, document.body.scrollHeight);
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    const buttons = getAllButtons();
+    if (buttons.length) run();
+  }
+
+  run();
+
+})();
